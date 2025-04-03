@@ -1,6 +1,9 @@
 import streamlit as st
 from deep_translator import GoogleTranslator
 import pykakasi
+from gtts import gTTS
+import tempfile
+import os
 
 # Setup
 kakasi = pykakasi.kakasi()
@@ -23,12 +26,19 @@ if st.button("Translate"):
             st.success("Translation:")
             st.write(translated_text)
 
-            # Romaji only if output is Japanese
+            # Romaji if Japanese output
             if target_lang == "ja":
                 result = kakasi.convert(translated_text)
                 romaji = " ".join([item['hepburn'] for item in result])
                 st.info("Pronunciation (Romaji):")
                 st.write(romaji)
+
+            # Text-to-Speech
+            tts = gTTS(text=translated_text, lang=target_lang)
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
+                tts.save(fp.name)
+                st.audio(fp.name, format='audio/mp3')
+                os.unlink(fp.name)  # Cleanup after playback
 
         except Exception as e:
             st.error(f"Translation failed: {e}")
