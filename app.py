@@ -1,6 +1,9 @@
 import streamlit as st
 from deep_translator import GoogleTranslator
+import pykakasi
 
+# Setup
+kakasi = pykakasi.kakasi()
 st.set_page_config(page_title="Japanese-English Translator", layout="centered")
 st.title("🈺 Japanese ⇄ English Translator")
 
@@ -15,8 +18,17 @@ if st.button("Translate"):
         target_lang = "en" if src_lang == "ja" else "ja"
 
         try:
+            # Translation
             translated_text = GoogleTranslator(source=src_lang, target=target_lang).translate(text_input)
             st.success("Translation:")
             st.write(translated_text)
+
+            # Romaji only if output is Japanese
+            if target_lang == "ja":
+                result = kakasi.convert(translated_text)
+                romaji = " ".join([item['hepburn'] for item in result])
+                st.info("Pronunciation (Romaji):")
+                st.write(romaji)
+
         except Exception as e:
             st.error(f"Translation failed: {e}")
