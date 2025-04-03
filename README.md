@@ -1,2 +1,2 @@
-# 22Translate
-A Japanese translation app that can be used for fast language translation 
+# Japanese ↔ English Translator App
+A simple translator app built with Streamlit using deep-translator.
