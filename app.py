@@ -38,7 +38,7 @@ if st.button("Translate"):
                 st.write(romaji)
 
 # Text-to-speech (Streamlit Cloud safe with error handling)
-try:
+    try:
     tts_lang = 'ja' if target_lang == 'ja' else 'en'
     tts = gTTS(text=translated_text, lang=tts_lang)
     mp3_fp = BytesIO()
