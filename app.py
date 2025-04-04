@@ -37,13 +37,13 @@ if st.button("Translate"):
                 st.info("Pronunciation (Romaji):")
                 st.write(romaji)
 
-            # Text-to-speech (Streamlit Cloud safe)
-            tts_lang = 'ja' if target_lang == 'ja' else 'en'
-            tts = gTTS(text=translated_text, lang=tts_lang)
-            mp3_fp = BytesIO()
-            tts.write_to_fp(mp3_fp)
-            mp3_fp.seek(0)
-            st.audio(mp3_fp, format='audio/mp3')
-
-        except Exception as e:
-            st.error(f"Oops! Something went wrong: {e}")
+# Text-to-speech (Streamlit Cloud safe with error handling)
+try:
+    tts_lang = 'ja' if target_lang == 'ja' else 'en'
+    tts = gTTS(text=translated_text, lang=tts_lang)
+    mp3_fp = BytesIO()
+    tts.write_to_fp(mp3_fp)
+    mp3_fp.seek(0)
+    st.audio(mp3_fp, format='audio/mp3')
+except Exception as e:
+    st.warning("Sorry! I couldn’t pronounce that sentence. Try a shorter or simpler one.")
